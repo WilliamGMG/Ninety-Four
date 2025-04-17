@@ -1,0 +1,45 @@
+#ifndef FILELOADER_H
+#define FILELOADER_H
+
+#include <string>
+#include <filesystem>
+#include <fstream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+using namespace std;
+
+enum class FileSearchStatus {
+  Found,
+  InvalidFNApath,
+  InvalidFileType,
+  InvalidFolderPath,
+  FileNotFoundInFolder
+};
+
+enum class LoadChunkStatus {
+  Loaded,
+  FailedToOpenFile,
+  EndOfFile
+};
+
+class FileLoader {
+public:
+  FileLoader(const string& path);
+  bool openFile(fstream& file);
+  FileSearchStatus findFile();
+  FileSearchStatus findFile(const string& path) {this->givenPath = path; return findFile();}
+  LoadChunkStatus loadChunk(vector<pair<int, string>>& chunk) {return loadChunk(chunk, this->chunkSize);}
+  LoadChunkStatus loadChunk(vector<pair<int, string>>& chunk, int chunkSize);
+  void setChunkSize(int size) {this->chunkSize = size;}
+
+private:
+  int uid;
+  string givenPath;
+  string filePath;
+  int chunkSize;
+  int currentLine;
+};
+
+#endif //FILELOADER_H
