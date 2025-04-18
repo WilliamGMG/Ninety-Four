@@ -10,20 +10,46 @@ using namespace std;
 // Search here: https://www.ncbi.nlm.nih.gov/datasets/genome/
 
 int main() {
-  FileLoader file("../data/Human/");
-  FileSearchStatus fileStatus = file.findFile();
+  string path;
+  cout << "Please enter a path to a folder or .fna file: ";
+  cin >> path;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  FileLoader fileLoader(path);
+  FileSearchStatus searchStatus = fileLoader.findFile();
 
-  vector<pair<int, string>> chunk;
-  file.setChunkSize(500);
-
-  LoadChunkStatus loadStatus = file.loadChunk(chunk);
-  for (auto [fst, snd] : chunk) {
-    cout << "ID: " << fst << " Seq: " << snd << endl;
+  while (searchStatus != FileSearchStatus::Found) {
+    if (searchStatus == FileSearchStatus::InvalidFileType) {
+      cout << "Invalid file type!" << endl;
+    } else if (searchStatus == FileSearchStatus::InvalidFolderPath) {
+      cout << "Invalid folder path!" << endl;
+    } else if (searchStatus == FileSearchStatus::InvalidFNApath) {
+      cout << "Invalid file path!" << endl;
+    } else if (searchStatus == FileSearchStatus::FileNotFoundInFolder) {
+      cout << ".fna file not found in folder!" << endl;
+    }
+    cout << "Please enter a path to a folder or .fna file: ";
+    cin >> path;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
   }
+  cout << ".fna file found!" << endl;
 
-  loadStatus = file.loadChunk(chunk, 1000);
-  for (auto [fst, snd] : chunk) {
-    cout << "ID: " << fst << " Seq: " << snd << endl;
+  string seq;
+
+  cout << endl << "Please enter a sequence to search for: ";
+  cin >> seq;
+  while (seq != "exit") {
+    // Filler code. here is where main with interact with the B Tree and hash table
+    vector<string> results = {
+      "Seq. match at ID: 233544",
+      "Seq. match at ID: 123456 to 123458"};
+    cout << "Scan complete: " << endl;
+    for (auto r : results) {
+      cout << "\t" << r << endl;
+    }
+
+    // End filler code.
+    cout << endl << "Please enter a sequence to search for or exit to end: ";
+    cin >> seq;
   }
 
   return 0;
