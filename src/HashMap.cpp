@@ -21,7 +21,12 @@ void HashMap::insertPrivate(int id, const string &sequence) {
 //Search
 //Citation: https://cplusplus.com/reference/unordered_map/unordered_map/find/
 vector<int> HashMap::search(int id, const string &sequence) {
-    return searchPrivate(id, sequence);
+    //Citation: https://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now & Module 2 Study Guide
+    auto t1= std::chrono::high_resolution_clock::now();
+    vector<int> resultVector = searchPrivate(id,sequence);
+    auto t2 = std::chrono::high_resolution_clock::now();
+    searchTime = t2 - t1;
+    return resultVector;
 }
 vector<int> HashMap::searchPrivate(int id, const string &sequence) {
     vector<int> resultIDs; //contains the IDs that have the partial sequence within the stored sequences
