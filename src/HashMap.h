@@ -16,7 +16,7 @@ using namespace std;
 class HashMap {
 private:
     unordered_map<int, string> genomeHashmap; // key = ID, string =  capitalized string of letters
-    std::chrono::duration<float, std::milli> searchTime; //Citation: https://cplusplus.com/reference/chrono/duration/duration/
+    std::chrono::duration<float, std::milli> searchTime{}; //Citation: https://cplusplus.com/reference/chrono/duration/duration/
 
     map<int,string> debuggingIDs; //helper variable for Catch2
 
@@ -28,6 +28,11 @@ private:
     void printPrivate();
 
     void updateDebugMap(); //updates the debuggingIDs for Catch2 purposes
+
+    //To avoid Linear Searching values via .find(), use Knuth-Morris-Pratt Algorithm for string searching
+    //KMP = returns T if subsequence is found in sequence
+    vector<int> getLPS(const string &subsequence);
+    bool findKMP(const string &subsequence, string &sequence);
 
 public:
     //Constructors

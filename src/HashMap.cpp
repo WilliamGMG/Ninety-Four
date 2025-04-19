@@ -33,9 +33,7 @@ vector<int> HashMap::searchPrivate(int id, const string &sequence) {
 
     //Iterate through and check if sequence is within any values
     for (auto & specimen : genomeHashmap){
-
-        //Citation: https://cplusplus.com/reference/string/string/find/
-        if (specimen.second.find(sequence) != string::npos){
+        if (findKMP(sequence,specimen.second)){
             resultIDs.push_back(specimen.first);
         }
     }
@@ -83,4 +81,69 @@ vector<int> HashMap::getIDs(const string &exactSequence) {
 
 string HashMap::getSequence(const int &ID) {
     return genomeHashmap[ID];
+}
+
+//Citation: https://www.youtube.com/watch?v=GTJr8OvyEVQ, https://www.youtube.com/watch?v=V5-7GzOfADQ
+vector<int> HashMap::getLPS(const string &subsequence) {
+    //EdgeCase Sequence DNE -- return empty vector
+    if (subsequence.empty()){return {};}
+
+    //Initialize Longest Prefix Suffix Array
+    vector<int> lps(subsequence.size(),0);
+
+    //Adjustments to LPS where i and j are index pointers
+    int i = 0;
+    int j = 1;
+    while (j < subsequence.size()){
+        if (subsequence[j] == subsequence[i]){
+            lps[j] = i + 1;
+            i++;
+            j++;
+        }
+        else{ //not a matching character
+            if (i != 0){
+                //use value to the left of the left pointer
+                i = lps[i - 1];
+            }
+            else{ //no match, set to 0 and increment
+                lps[j] = 0;
+                j++;
+            }
+        }
+    }
+    return lps;
+}
+bool HashMap::findKMP(const string &subsequence, string &sequence) {
+    bool result = false; //change to true the moment subsequence is found
+
+    //Edge Case -- if either sequence DNE
+    if (subsequence.empty() || sequence.empty()){return result;}
+
+    //KMP -- return true at the first instance of the subsequence being in the sequence
+    vector<int> lps = getLPS(subsequence);
+    //set up pointers for the sequences
+    int subSeq = 0;
+    int seq = 0;
+
+    while(seq < sequence.size()){
+        //Matching Characters
+        if (subsequence[subSeq] == sequence[seq]){
+            subSeq++;
+            seq++;
+            if (seq == subsequence.size()){
+                return true;
+            }
+        }
+        //Characters do not match, skip indices in next pass
+        else{
+            if (subSeq == 0){
+                seq++;
+            }
+            else{
+                subSeq = lps[subSeq - 1];
+            }
+        }
+    }
+
+    return result; //Catch-all in case
 }
