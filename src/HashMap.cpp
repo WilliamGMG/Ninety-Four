@@ -7,8 +7,8 @@ HashMap::HashMap(FileLoader& fileLoader) {
     vector<pair<int, string>> chunk;
 
     while (fileLoader.loadChunk(chunk) != LoadChunkStatus::EndOfFile) {
-        for (auto &i:chunk){
-            genomeHashmap[i.first] = i.second;
+        for (auto &i: chunk) {
+            hashmapBySeq[i.second].insert(i.first);
         }
     }
 }
@@ -19,26 +19,28 @@ void HashMap::insert(int id, const string &sequence) {
     insertPrivate(id, sequence);
 }
 void HashMap::insertPrivate(int id, const string &sequence) {
-    genomeHashmap.insert({id,sequence});
+    //hashmapByID.insert({id, sequence});
+    hashmapBySeq[sequence].insert(id);
 }
 
 //Search
 //Citation: https://cplusplus.com/reference/unordered_map/unordered_map/find/
-vector<int> HashMap::search(int id, const string &sequence) {
+set<int> HashMap::search(int id, const string &sequence) {
     //Citation: https://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now & Module 2 Study Guide
     auto t1= std::chrono::high_resolution_clock::now();
-    vector<int> resultVector = searchPrivate(id,sequence);
+    set<int> resultVector = searchPrivate(id,sequence);
     auto t2 = std::chrono::high_resolution_clock::now();
     searchTime = t2 - t1;
     return resultVector;
 }
-vector<int> HashMap::searchPrivate(int id, const string &sequence) {
-    vector<int> resultIDs; //contains the IDs that have the partial sequence within the stored sequences
+set<int> HashMap::searchPrivate(int id, const string &sequence) {
+    set<int> resultIDs; //contains the IDs that have the partial sequence within the stored sequences
 
-    //Iterate through and check if sequence is within any values
-    for (auto & specimen : genomeHashmap){
-        if (findKMP(sequence,specimen.second)){
-            resultIDs.push_back(specimen.first);
+    //Mixed Hashmap functionality with KMP Algorithm
+    for (auto & genome : hashmapBySeq){
+        //HashMap Exact Sequences || KMP for substrings
+        if (genome.first == sequence || findKMP(sequence,genome.first)){
+            resultIDs.insert(genome.second.begin(),genome.second.end());
         }
     }
 
@@ -55,36 +57,26 @@ void HashMap::print() {
     printPrivate();
 }
 void HashMap::printPrivate() {
-    for (auto & specimen : genomeHashmap){
+    /*
+    for (auto & specimen : hashmapByID){
         cout << "ID: " << specimen.first << ": " << specimen.second << endl;
         }
     }
-
-map<int, string> HashMap::debugMap() {
-    updateDebugMap();
-    return debuggingIDs;
-}
-
-void HashMap::updateDebugMap() {
-    for (auto & specimen : genomeHashmap){
-        debuggingIDs[specimen.first] = specimen.second;
-    }
-}
-
-vector<int> HashMap::getIDs(const string &exactSequence) {
-    vector<int> resultIDs; //contains the IDs that have the partial sequence within the stored sequences
-
-    //Iterate through and check if for exactSequence
-    for (auto & specimen : genomeHashmap){
-        if (specimen.second == exactSequence){
-            resultIDs.push_back(specimen.first);
+     */
+    for (auto & sequence : hashmapBySeq){
+        cout << "Sequence: " << sequence.first << ": ";
+        for (int i : sequence.second){
+            if (i != sequence.second.size() - 1){
+                cout << i << ", ";
+            }
+            else{
+                cout << i << endl;
+            }
         }
-    }
-    return resultIDs;
-}
+    }}
 
-string HashMap::getSequence(const int &ID) {
-    return genomeHashmap[ID];
+set<int> HashMap::getIDs(const string &exactSequence) {
+    return hashmapBySeq[exactSequence];
 }
 
 //Citation: https://www.youtube.com/watch?v=GTJr8OvyEVQ, https://www.youtube.com/watch?v=V5-7GzOfADQ
@@ -117,7 +109,7 @@ vector<int> HashMap::getLPS(const string &subsequence) {
     }
     return lps;
 }
-bool HashMap::findKMP(const string &subsequence, string &sequence) {
+bool HashMap::findKMP(const string &subsequence,const string &sequence) {
     bool result = false; //change to true the moment subsequence is found
 
     //Edge Case -- if either sequence DNE
@@ -151,3 +143,29 @@ bool HashMap::findKMP(const string &subsequence, string &sequence) {
 
     return result; //Catch-all in case
 }
+
+//For Catch2 purposes
+map<string, set<int>> HashMap::debugSeqMap() {
+    updateDebugSeqMap();
+    return debuggingSequences;
+}
+
+void HashMap::updateDebugSeqMap() {
+    for (auto & seq : hashmapBySeq){
+        debuggingSequences[seq.first] = seq.second;
+    }
+}
+
+/*
+map<int, string> HashMap::debugIDMap() {
+updateDebugIDMap();
+return debuggingIDs;
+}
+
+void HashMap::updateDebugIDMap() {
+for (auto & specimen : hashmapByID){
+    debuggingIDs[specimen.first] = specimen.second;
+}
+
+}
+*/
