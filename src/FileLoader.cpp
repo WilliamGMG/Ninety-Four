@@ -4,7 +4,7 @@ FileLoader::FileLoader(const string& path) {
     this->givenPath = path;
     this->filePath = "";
     this->uid = 1;
-    this->chunkSize = 1;
+    this->chunkSize = DEFAULT_CHUNK_SIZE;
     this->currentLine = 1;
 }
 

@@ -3,9 +3,13 @@
 //Constructor
 HashMap::HashMap() = default;
 //Parameterized
-HashMap::HashMap(vector<pair<int, string>> &chunks) {
-    for (auto &i:chunks){
-        genomeHashmap[i.first] = i.second;
+HashMap::HashMap(FileLoader& fileLoader) {
+    vector<pair<int, string>> chunk;
+
+    while (fileLoader.loadChunk(chunk) != LoadChunkStatus::EndOfFile) {
+        for (auto &i:chunk){
+            genomeHashmap[i.first] = i.second;
+        }
     }
 }
 

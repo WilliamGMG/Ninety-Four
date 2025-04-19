@@ -10,6 +10,8 @@
 #include <cctype>
 using namespace std;
 
+#define DEFAULT_CHUNK_SIZE 100000
+
 enum class FileSearchStatus {
   Found,
   InvalidFNApath,

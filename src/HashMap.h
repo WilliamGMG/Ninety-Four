@@ -10,6 +10,7 @@
 #include <map>
 #include <utility>
 #include <chrono>
+#include "FileLoader.h"
 using namespace std;
 
 //FIXME: potential issue with ID from hashmap not making sense with the inserted ID?
@@ -38,7 +39,7 @@ public:
     //Constructors
     HashMap();
     //FIXME: Parameterized to add a lot of keys at once
-    HashMap(vector<pair<int, string>> &chunks);
+    HashMap(FileLoader& fileLoader);
 
     //Insert ID with Sequence of new potentially dangerous sample
     void insert(int id, const string& sequence);
