@@ -1,5 +1,7 @@
 #include "FileLoader.h"
 
+#include <iostream>
+
 FileLoader::FileLoader(const string& path) {
     this->givenPath = path;
     this->filePath = "";
@@ -18,9 +20,6 @@ FileSearchStatus FileLoader::findFile() {
             return FileSearchStatus::Found;
         }
         return FileSearchStatus::InvalidFNApath;
-    }
-    if (givenPath.find('.') != string::npos && givenPath.find("..") == string::npos) { // Path to file that is not .fna
-        return FileSearchStatus::InvalidFileType;
     }
 
     if (!filesystem::exists(givenPath)) {

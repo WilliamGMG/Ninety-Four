@@ -15,7 +15,6 @@ using namespace std;
 enum class FileSearchStatus {
   Found,
   InvalidFNApath,
-  InvalidFileType,
   InvalidFolderPath,
   FileNotFoundInFolder
 };
