@@ -3,6 +3,9 @@
 //
 
 #include "BTree.h"
+
+#include <iostream>
+
 BTree::BTree() {
     root = new TreeNodes(true);
 }
@@ -21,7 +24,11 @@ void BTree::BTree_insert(string seq, int id) {
 }
 
 set<int> BTree::BTree_search(string seq) {
-    return root->search(seq);
+    set<int> result=root->search(seq);
+    if (result.empty()) {
+        cout << "Sequence not found" << endl;
+    }
+    return result;
 }
 
 void BTree::BTree_print() {

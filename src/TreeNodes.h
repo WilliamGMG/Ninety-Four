@@ -27,6 +27,8 @@ class TreeNodes {
     void print();
     int get_key_size();
     void set_ptr(TreeNodes* child);
+    bool kmp(string seq, string data);
+    vector<int> lps(string seq);
 
 };
 

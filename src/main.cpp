@@ -4,6 +4,8 @@
 #include <utility>
 
 #include "FileLoader.h"
+#include <set>
+#include "BTree.h"
 
 using namespace std;
 
@@ -34,17 +36,20 @@ int main() {
   cout << ".fna file found!" << endl;
 
   string seq;
+  BTree btree;
+  btree.load_file(fileLoader);
 
   cout << endl << "Please enter a sequence to search for: ";
   cin >> seq;
   while (seq != "exit") {
     // Filler code. here is where main with interact with the B Tree and hash table
-    vector<string> results = {
-      "Seq. match at ID: 233544",
-      "Seq. match at ID: 123456 to 123458"};
-    cout << "Scan complete: " << endl;
-    for (auto r : results) {
-      cout << "\t" << r << endl;
+    set<int> tree = btree.BTree_search(seq);
+    if (tree.empty() == false) {
+      cout << "Scan complete:" << endl;
+      for (set<int>::iterator it = tree.begin(); it != tree.end(); it++) {
+        cout << "\tSeq. match at ID: " << *it << endl;
+      }
+
     }
 
     // End filler code.

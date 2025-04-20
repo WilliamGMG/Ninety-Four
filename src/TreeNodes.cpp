@@ -101,7 +101,7 @@ set<int> TreeNodes::search(string seq) {
         if (keys[0].first == seq) {
             result.insert(keys[0].second);
         }
-        else if (keys[0].first.find(seq) != string::npos) {
+        else if (kmp(seq,keys[0].first) == true) {
             result.insert(keys[0].second);
         }
 
@@ -120,13 +120,13 @@ set<int> TreeNodes::search(string seq) {
         if (keys[0].first == seq) {
             result.insert(keys[0].second);
         }
-        else if (keys[0].first.find(seq) != string::npos) {
+        else if (kmp(seq,keys[0].first) == true) {
             result.insert(keys[0].second);
         }
         if (keys[1].first == seq) {
             result.insert(keys[1].second);
         }
-        else if (keys[1].first.find(seq) != string::npos) {
+        else if (kmp(seq,keys[1].first) == true) {
             result.insert(keys[1].second);
         }
 
@@ -144,6 +144,7 @@ set<int> TreeNodes::search(string seq) {
                 result.insert(c.begin(), c.end());
             }
         }
+
     }
     return result;
 }
@@ -164,4 +165,56 @@ int TreeNodes::get_key_size() {
 void TreeNodes::set_ptr(TreeNodes* child) {
     child_ptr.push_back(child);
 }
+vector<int> TreeNodes::lps(string seq) {
+    vector<int> lps(seq.size(), 0);
+    int len = 0;
+    int i = 1;
+
+    while (i < seq.size()) {
+        if (seq[i] == seq[len]) {
+            len++;
+            lps[i] = len;
+            i++;
+        }
+        else {
+            if (len != 0) {
+                len = lps[len-1];
+            }
+            else {
+                lps[i++] = 0;
+            }
+        }
+    }
+    return lps;
+}
+
+bool TreeNodes::kmp(string seq, string data) {
+    if (seq.empty()) {
+        return false;
+    }
+    if (data.empty()) {
+        return false;
+    }
+    vector<int> x = lps(seq);
+    int i = 0, j = 0;
+
+    while (i < data.size()) {
+        if (data[i] == seq[j]) {
+            i++;
+            j++;
+            if (j == seq.size()) {
+                return true;
+            }
+        } else {
+            if (j != 0) {
+                j = x[j-1];
+            }
+            else {
+                i++;
+            }
+        }
+    }
+    return false;
+}
+
 
