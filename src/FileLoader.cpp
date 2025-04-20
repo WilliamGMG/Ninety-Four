@@ -4,7 +4,7 @@ FileLoader::FileLoader(const string& path) {
     this->givenPath = path;
     this->filePath = "";
     this->uid = 1;
-    this->chunkSize = 1;
+    this->chunkSize = DEFAULT_CHUNK_SIZE;
     this->currentLine = 1;
 }
 
@@ -55,6 +55,7 @@ LoadChunkStatus FileLoader::loadChunk(vector<pair<int, string>>& chunk, int chun
     string line;
     for (int i = 0; i < currentLine; i++) {
         if (file.eof()) {
+            file.close();
             return LoadChunkStatus::EndOfFile;
         }
         getline(file, line);
@@ -63,6 +64,10 @@ LoadChunkStatus FileLoader::loadChunk(vector<pair<int, string>>& chunk, int chun
     // Go until chunk size
     for (int i = 0; i < chunkSize; i++) {
         if (file.eof()) {
+            file.close();
+            if (!chunk.empty()) {
+                return LoadChunkStatus::Loaded;
+            }
             return LoadChunkStatus::EndOfFile;
         }
         getline(file, line);
@@ -77,6 +82,19 @@ LoadChunkStatus FileLoader::loadChunk(vector<pair<int, string>>& chunk, int chun
     file.close();
     return LoadChunkStatus::Loaded;
 }
+
+string FileLoader::getFileHeader() {
+    fstream file;
+    if (!openFile(file)) {
+        return "";
+    }
+
+    string line;
+    getline(file, line);
+    file.close();
+    return line;
+}
+
 
 bool FileLoader::openFile(fstream& file) {
     try {

@@ -10,6 +10,8 @@
 #include <cctype>
 using namespace std;
 
+#define DEFAULT_CHUNK_SIZE 100000
+
 enum class FileSearchStatus {
   Found,
   InvalidFNApath,
@@ -32,7 +34,9 @@ public:
   FileSearchStatus findFile(const string& path) {this->givenPath = path; return findFile();}
   LoadChunkStatus loadChunk(vector<pair<int, string>>& chunk) {return loadChunk(chunk, this->chunkSize);}
   LoadChunkStatus loadChunk(vector<pair<int, string>>& chunk, int chunkSize);
+  string getFileHeader();
   void setChunkSize(int size) {this->chunkSize = size;}
+  void resetFilePos() {currentLine = 1; uid = 1;}
 
 private:
   int uid;
