@@ -12,6 +12,7 @@ class BTree {
     TreeNodes* root;
 public:
     BTree();
+    BTree(FileLoader& fileLoader);
     ~BTree();
     void BTree_insert(string seq, int id);
     set<int> BTree_search(string seq);

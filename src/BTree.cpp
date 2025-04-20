@@ -9,6 +9,10 @@
 BTree::BTree() {
     root = new TreeNodes(true);
 }
+BTree::BTree(FileLoader& fileLoader) {
+    root = new TreeNodes(true);
+    load_file(fileLoader);
+}
 BTree::~BTree() {
     delete root;
 }
@@ -25,9 +29,6 @@ void BTree::BTree_insert(string seq, int id) {
 
 set<int> BTree::BTree_search(string seq) {
     set<int> result=root->search(seq);
-    if (result.empty()) {
-        cout << "Sequence not found" << endl;
-    }
     return result;
 }
 
