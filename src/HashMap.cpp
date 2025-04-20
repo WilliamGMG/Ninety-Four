@@ -44,11 +44,6 @@ set<int> HashMap::searchPrivate(int id, const string &sequence) {
         }
     }
 
-    //IDs were found, insert new specimen that we were searching for
-    if (!resultIDs.empty()){
-        insertPrivate(id,sequence);
-    }
-
     return resultIDs;
 }
 
