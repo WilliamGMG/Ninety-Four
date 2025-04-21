@@ -121,7 +121,7 @@ bool HashMap::findKMP(const string &subsequence,const string &sequence) {
         if (subsequence[subSeq] == sequence[seq]){
             subSeq++;
             seq++;
-            if (seq == subsequence.size()){
+            if (subSeq == subsequence.size()){
                 return true;
             }
         }
