@@ -14,22 +14,18 @@ BTree::~BTree() {
 }
 
 void BTree::BTree_insert(string seq, int id) {
-    if (root->get_key_count() > 2 * t - 1) {
-        throw runtime_error("[ERROR] Root node has illegal number of keys.");
-    }
-
-    if (root->get_key_count() == 2 * t - 1) {
+    if (root->get_key_count() == 2 *t -1) {
         TreeNodes* temp = root;
-        TreeNodes* new_node = new TreeNodes(false);
+        TreeNodes *new_node = new TreeNodes(false);
         root = new_node;
-        new_node->add_child(temp, 0);
-        split(new_node, 0);
+        new_node->add_child(temp,0);
+        split(new_node,0);
         insert_nonfull(new_node, seq, id);
-    } else {
+    }
+    else {
         insert_nonfull(root, seq, id);
     }
 }
-
 //should be a non full parent nodes and index i of child that is full
 void BTree::split(TreeNodes* parent, int i) {
     TreeNodes* full_child = parent->get_a_child(i);
@@ -61,46 +57,43 @@ void BTree::split(TreeNodes* parent, int i) {
     }
 }
 
-void BTree::insert_nonfull(TreeNodes* node, string seq, int id) {
-    if (node->get_key_count() > 2 * t - 2) {
-        throw runtime_error("[ERROR] Attempting to insert into overfull node.");
+void BTree::insert_nonfull(TreeNodes *node, string seq, int id) {
+    //if leaf insert it//
+    if (node->get_is_leaf() == true) {
+        node->add_keys_m(pair<string, int>(seq, id));
     }
+    //if not leaf, must find child
+    else {
+        //while keys size is greater than 0, and seq < node key at 1
+        // keeping track of index because that is the the child index
+        // find child index, see if it is full, split, decide which child to go into, recurse into the child//
 
-    if (node->get_is_leaf()) {
-        node->add_keys_m({seq, id});
-        return;
-    }
-
-    int k = node->get_key_count() - 1;
-    while (k >= 0) {
-        if (seq < node->get_key(k).first) {
-            k--;
-        } else {
-            break;
-        }
-    }
-    k++;
-
-    TreeNodes* temp = node->get_a_child(k);
-
-    if (temp->get_key_count() == 2 * t - 1) {
-        split(node, k);
-
-        int i = node->get_key_count() - 1;
-        while (i >= 0) {
-            if (seq < node->get_key(i).first) {
-                i--;
-            } else {
+        int k = node->get_key_count()-1;
+        while (k >= 0) {
+            if (seq < node->get_key(k).first) {
+                k--;
+            }
+            else {
                 break;
             }
         }
-        i++;
-        temp = node->get_a_child(i);
-    }
-
-    insert_nonfull(temp, seq, id);
-}
-
+        k++;
+        TreeNodes *temp = node->get_a_child(k);
+        if (temp->get_key_count() == 2*t -1) {
+            split(node,k);
+            int i = node->get_key_count() -1;
+            while (i >= 0) {
+                if (seq < node->get_key(i).first) {
+                    i--;
+                }
+                else {
+                    break;
+                }
+            }
+            i++;
+            temp = node->get_a_child(i);
+        }
+        insert_nonfull(temp, seq, id);
 
     //     for (int i = node->get_child_count(); i >= 0; i++) {
     //         if (temp->get_key(i) > seq) {
@@ -119,7 +112,8 @@ void BTree::insert_nonfull(TreeNodes* node, string seq, int id) {
     //                 break;
     //     }
     //
-
+    }
+}
 
 
 
