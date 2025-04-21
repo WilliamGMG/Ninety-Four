@@ -1,61 +1,25 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <utility>
-
-#include "FileLoader.h"
-#include <set>
 #include "BTree.h"
 
 using namespace std;
 
-// Search here: https://www.ncbi.nlm.nih.gov/datasets/genome/
-
 int main() {
-  string path;
-  cout << "Please enter a path to a folder or .fna file: ";
-  cin >> path;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  FileLoader fileLoader(path);
-  FileSearchStatus searchStatus = fileLoader.findFile();
+    // Create B-tree with a chosen minimum degree (e.g., 2)
+    BTree btree;
 
-  while (searchStatus != FileSearchStatus::Found) {
-    if (searchStatus == FileSearchStatus::InvalidFileType) {
-      cout << "Invalid file type!" << endl;
-    } else if (searchStatus == FileSearchStatus::InvalidFolderPath) {
-      cout << "Invalid folder path!" << endl;
-    } else if (searchStatus == FileSearchStatus::InvalidFNApath) {
-      cout << "Invalid file path!" << endl;
-    } else if (searchStatus == FileSearchStatus::FileNotFoundInFolder) {
-      cout << ".fna file not found in folder!" << endl;
-    }
-    cout << "Please enter a path to a folder or .fna file: ";
-    cin >> path;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  }
-  cout << ".fna file found!" << endl;
+    // Insert a range of sequences into the B-tree
+    cout << "[DEBUG] Inserting test sequences from ID 0 to 50009..." << endl;
 
-  string seq;
-  BTree btree;
-  btree.load_file(fileLoader);
-
-  cout << endl << "Please enter a sequence to search for: ";
-  cin >> seq;
-  while (seq != "exit") {
-    // Filler code. here is where main with interact with the B Tree and hash table
-    set<int> tree = btree.BTree_search(seq);
-    if (tree.empty() == false) {
-      cout << "Scan complete:" << endl;
-      for (set<int>::iterator it = tree.begin(); it != tree.end(); it++) {
-        cout << "\tSeq. match at ID: " << *it << endl;
-      }
-
+    for (int i = 0; i <= 50009; i++) {
+        string testSeq = "SEQ_" + string(6 - to_string(i).length(), '0') + to_string(i);
+        btree.BTree_insert(testSeq, i);
     }
 
-    // End filler code.
-    cout << endl << "Please enter a sequence to search for or exit to end: ";
-    cin >> seq;
-  }
+    // Optional: uncomment this if print is implemented
+    // btree.BTree_print();
 
-  return 0;
+    cout << "[DEBUG] Insert test complete." << endl;
+    return 0;
 }
