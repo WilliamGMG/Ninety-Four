@@ -43,3 +43,7 @@ void BTree::load_file(FileLoader& file) {
         }
     }
 }
+
+set<int> BTree::BTree_BFS_search(string seq) {
+    return root->BFS_search(seq);
+}

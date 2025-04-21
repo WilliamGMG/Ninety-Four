@@ -217,4 +217,39 @@ bool TreeNodes::kmp(string seq, string data) {
     return false;
 }
 
+//Citation: Level Order Traversal from Sum of Right Leaves (in Module 3 Slides)
+set<int> TreeNodes::BFS_search(string seq) {
+    set<int> result;
+    //Edge Case
+    if (keys.empty() || seq.empty()){
+        return {};
+    }
+
+    queue<TreeNodes*> q;
+    q.push(this); //TreeNode self call
+
+    while (!q.empty()){
+        TreeNodes* currNode = q.front();
+
+        //Check the keys in the current TreeNode
+        for (auto & key : currNode->keys){
+            //Search Function: key direct match || subsequence check
+            if (key.first == seq || currNode->kmp(seq,key.first)){
+                result.insert(key.second);
+            }
+        }
+
+        //Push in the Children after Level Done
+        if (!currNode->is_leaf){
+            for (TreeNodes* child:currNode->child_ptr){
+                q.push(child);
+            }
+        }
+
+        q.pop();
+    }
+
+    return result;
+}
+
 

@@ -19,7 +19,7 @@ class HashMap {
 private:
     //unordered_map<int, string> hashmapByID; // key = ID, value =  capitalized string of letters
     unordered_map<string, set<int>> hashmapBySeq; //key = Sequence, value = vector of IDs
-    std::chrono::duration<float, std::milli> searchTime{}; //Citation: https://cplusplus.com/reference/chrono/duration/duration/
+    //std::chrono::duration<float, std::milli> searchTime{}; //Citation: https://cplusplus.com/reference/chrono/duration/duration/
 
     //Helper Variable for Catch2
     //map<int,string> debuggingIDs;

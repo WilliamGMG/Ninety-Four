@@ -100,7 +100,7 @@ int main() {
 
       // BTree
       auto t1= chrono::high_resolution_clock::now();
-      bool found = !bTrees[i]->BTree_search(seq).empty();
+      bool found = !bTrees[i]->BTree_BFS_search(seq).empty();
       auto t2 = chrono::high_resolution_clock::now();
 
       if (found) {

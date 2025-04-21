@@ -27,10 +27,10 @@ void HashMap::insertPrivate(int id, const string &sequence) {
 //Citation: https://cplusplus.com/reference/unordered_map/unordered_map/find/
 set<int> HashMap::search(int id, const string &sequence) {
     //Citation: https://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now & Module 2 Study Guide
-    auto t1= std::chrono::high_resolution_clock::now();
+    //auto t1= std::chrono::high_resolution_clock::now();
     set<int> resultVector = searchPrivate(id,sequence);
-    auto t2 = std::chrono::high_resolution_clock::now();
-    searchTime = t2 - t1;
+    //auto t2 = std::chrono::high_resolution_clock::now();
+    //searchTime = t2 - t1;
     return resultVector;
 }
 set<int> HashMap::searchPrivate(int id, const string &sequence) {

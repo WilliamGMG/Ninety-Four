@@ -18,6 +18,8 @@ public:
     set<int> BTree_search(string seq);
     void BTree_print();
     void load_file(FileLoader& file);
+
+    set<int> BTree_BFS_search(string seq);
 };
 
 

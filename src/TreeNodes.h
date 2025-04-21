@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <queue>
 
 using namespace std;
 
@@ -29,6 +30,8 @@ class TreeNodes {
     void set_ptr(TreeNodes* child);
     bool kmp(string seq, string data);
     vector<int> lps(string seq);
+
+    set<int> BFS_search(string seq);
 
 };
 
