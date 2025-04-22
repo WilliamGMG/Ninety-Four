@@ -14,8 +14,8 @@ using namespace std;
 
 int main() {
     cout << "  _____________________________________________  " << endl;
-    cout << " |                                             | " << endl;
-    cout << " |       Welcome to Gene Seek-Quence!          | " << endl;
+    cout << " |                Welcome to                   | " << endl;
+    cout << " |             Gene Seek-Quence!               | " << endl;
     cout << " |_____________________________________________| " << endl << endl;
 
   // Get .fna files
@@ -38,7 +38,7 @@ int main() {
       break;
     }
     if (validFiles.count(path)) {
-      cout << "File already entered!" << endl;
+      cout << "File already entered!" << endl <<endl;
       continue;
     }
 
@@ -183,6 +183,11 @@ int main() {
   for (auto hashMap : hashMaps) {
     delete hashMap;
   }
+
+    cout << "  _____________________________________________  " << endl;
+    cout << " |            Thank you for using              | " << endl;
+    cout << " |             Gene Seek-Quence!               | " << endl;
+    cout << " |_____________________________________________| " << endl;
 
   return 0;
 }
