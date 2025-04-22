@@ -30,14 +30,6 @@ void BTree::BTree_insert(string seq, int id) {
 void BTree::split(TreeNodes* parent, int i) {
     TreeNodes* full_child = parent->get_a_child(i);
 
-    if (full_child->get_key_count() != 2 * t - 1) {
-        throw runtime_error("[ERROR] Attempted to split non-full child. Key count mismatch.");
-    }
-
-    if (parent->get_key_count() >= 2 * t - 1) {
-        throw runtime_error("[ERROR] Parent node overflow after split. Too many keys.");
-    }
-
     TreeNodes* x = new TreeNodes(full_child->get_is_leaf());
 
     parent->add_keys_m(full_child->get_key(t - 1));
@@ -94,24 +86,6 @@ void BTree::insert_nonfull(TreeNodes *node, string seq, int id) {
             temp = node->get_a_child(i);
         }
         insert_nonfull(temp, seq, id);
-
-    //     for (int i = node->get_child_count(); i >= 0; i++) {
-    //         if (temp->get_key(i) > seq) {
-    //             TreeNodes *temp = node->get_a_child(i);
-    //             index++;
-    //             break;
-    //         }
-    //     }
-    //     if (temp->get_key_count() == 2*t -2) {
-    //         split(root, index)
-    //         int index = 0;
-    //         for (int i = node->get_child_count(); i >= 0; i++) {
-    //             if (temp->get_key(i) > seq) {
-    //                 TreeNodes *temp = node->get_a_child(i);
-    //                 index++;
-    //                 break;
-    //     }
-    //
     }
 }
 
@@ -177,16 +151,3 @@ set<int> BTree::BTree_BFSsearch(string seq){
 set<int> BTree::search(string seq) {
     return BTree_BFSsearch(seq);
 }
-
-//OLD CODE IN CASE:
-// set<int> BTree::BTree_search(string seq) {
-//     set<int> result=root->search(seq);
-//     if (result.empty()) {
-//         cout << "Sequence not found" << endl;
-//     }
-//     return result;
-// }
-//
-// void BTree::BTree_print() {
-//     root->print();
-// }

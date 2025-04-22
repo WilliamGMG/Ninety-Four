@@ -61,29 +61,48 @@ int main() {
     cout << "File found!" << endl;
   }
 
+  //Create BTree's and HashMaps
+  vector<BTree*> bTrees;
+  vector<HashMap*> hashMaps;
+  int maxSequenceLength = -1;
+  for (auto fileLoader : fileLoaders) {
+    auto* newBTree = new BTree();
+    newBTree->load_file(fileLoader);
+    fileLoader.resetFilePos();
+
+    auto* newHashMap = new HashMap(fileLoader);
+    fileLoader.resetFilePos();
+    bTrees.push_back(newBTree);
+    hashMaps.push_back(newHashMap);
+
+    int newSeqLen = fileLoader.getSequenceLength();
+    if (newSeqLen > maxSequenceLength) {
+      maxSequenceLength = newSeqLen;
+    }
+  }
+
   // Print organisms
   cout << endl << "Organism files loaded: " << endl;
   for (auto f : fileLoaders) {
     cout << "\t" << f.getFileHeader() << endl;
   }
 
-  //Create BTree's and HashMaps
-  vector<BTree*> bTrees;
-  vector<HashMap*> hashMaps;
-  for (auto fileLoader : fileLoaders) {
-    auto* newBTree = new BTree(fileLoader);
-    fileLoader.resetFilePos();
-    auto* newHashMap = new HashMap(fileLoader);
-    fileLoader.resetFilePos();
-    bTrees.push_back(newBTree);
-    hashMaps.push_back(newHashMap);
+  bool lineNum;
+  string option;
+  cout << endl << "Option: Would you like to know the line number of the sequence?\nEnter yes for yes or anything else for no: ";
+  cin >> option;
+  if (option == "yes") {
+    lineNum = true;
+  } else {
+    lineNum = false;
   }
+
+  // Max sequence length
+  cout << endl << "Note: Sequences entered have to be less than " << maxSequenceLength << " characters long." << endl;
 
   // Get and search for sequences
   string seq;
-
   while (true) {
-    cout << endl;
     cout << "Please enter a sequence to search for: ";
     cin >> seq;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -92,37 +111,64 @@ int main() {
       break;
     }
 
+    if (seq.length() > maxSequenceLength) {
+      cout << "That sequence is too big!" << endl;
+      continue;
+    }
+
     // Search for the sequence in each BTree / HashMap
     for (int i = 0; i < fileLoaders.size(); i++) {
       // Header
       cout << fileLoaders[i].getFileHeader() << endl;
-      cout << "\tBTree search: ";
+      cout << "BTree search:" << endl;
 
       // BTree
       auto t1= chrono::high_resolution_clock::now();
-      bool found = !bTrees[i]->BTree_BFS_search(seq).empty();
+      auto results = bTrees[i]->search(seq);
+      bool found = !results.empty();
       auto t2 = chrono::high_resolution_clock::now();
 
       if (found) {
-        cout << "found." << endl;
+        if (lineNum) {
+          string lineNumbers = "";
+          for (auto num : results) {
+            lineNumbers += to_string(num+1) + ", ";
+          }
+          lineNumbers.pop_back();
+          lineNumbers.pop_back();
+          cout << "\tFound on line number(s): " << lineNumbers << endl;
+        } else {
+          cout << "\tFound." << endl;
+        }
       } else {
-        cout << "not found." << endl;
+        cout << "\tNot found." << endl;
       }
-      cout << "\tBTree search time: " << chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << "ms" << endl;
+      cout << "\tSearch time: " << chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << "ms" << endl;
 
       // HashMap
-      cout << "\tHash map search: ";
+      cout << "Hash map search:" << endl;
 
       t1= chrono::high_resolution_clock::now();
-      found = !hashMaps[i]->search(1, seq).empty();
+      results = hashMaps[i]->search(1, seq);
+      found = !results.empty();
       t2 = chrono::high_resolution_clock::now();
 
       if (found) {
-        cout << "found." << endl;
+        if (lineNum) {
+          string lineNumbers = "";
+          for (auto num : results) {
+            lineNumbers += to_string(num+1) + ", ";
+          }
+          lineNumbers.pop_back();
+          lineNumbers.pop_back();
+          cout << "\tFound on line number(s): " << lineNumbers << endl;
+        } else {
+          cout << "\tFound." << endl;
+        }
       } else {
-        cout << "not found." << endl;
+        cout << "\tNot found." << endl;
       }
-      cout << "\tHash map search time: " << chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << "ms" << endl;
+      cout << "\tSearch time: " << chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << "ms" << endl << endl;
     }
   }
 

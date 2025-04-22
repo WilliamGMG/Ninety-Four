@@ -94,6 +94,16 @@ string FileLoader::getFileHeader() {
     return line;
 }
 
+int FileLoader::getSequenceLength() {
+    fstream file;
+    openFile(file);
+    string line;
+    getline(file, line);
+    getline(file, line);
+    file.close();
+    return line.length();
+}
+
 
 bool FileLoader::openFile(fstream& file) {
     try {

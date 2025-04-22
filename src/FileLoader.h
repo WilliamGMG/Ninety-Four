@@ -36,6 +36,7 @@ public:
   string getFileHeader();
   void setChunkSize(int size) {this->chunkSize = size;}
   void resetFilePos() {currentLine = 1; uid = 1;}
+  int getSequenceLength();
 
 private:
   int uid;

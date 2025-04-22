@@ -25,7 +25,6 @@ public:
     void insert_nonfull(TreeNodes* node, string seq, int id);
 
     set<int> search(string seq);
-    // void BTree_print();
     void load_file(FileLoader& file);
 
     set<int> BTree_BFS_search(string seq);
