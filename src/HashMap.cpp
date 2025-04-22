@@ -8,7 +8,7 @@ HashMap::HashMap(FileLoader& fileLoader) {
 
     while (fileLoader.loadChunk(chunk) != LoadChunkStatus::EndOfFile) {
         for (auto &i: chunk) {
-            hashmapBySeq[i.second].insert(i.first);
+            insert(i.first, i.second);
         }
     }
 }
