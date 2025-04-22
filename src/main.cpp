@@ -54,21 +54,21 @@ int main() {
     cout << endl << "Please enter a sequence to search for: ";
     cin >> seq;
 
-    // while (seq != "exit") {
-    //     set<int> results = btree.BTree_search(seq);
-    //
-    //     if (results.empty()) {
-    //         cout << "No matching sequence found." << endl;
-    //     } else {
-    //         cout << "Scan complete:" << endl;
-    //         for (int id : results) {
-    //             cout << "\tSeq. match at ID: " << id << endl;
-    //         }
-    //     }
-    //
-    //     cout << endl << "Please enter a sequence to search for or exit to end: ";
-    //     cin >> seq;
-    // }
+    while (seq != "exit") {
+         set<int> results = btree.search(seq);
+
+         if (results.empty()) {
+             cout << "No matching sequence found." << endl;
+         } else {
+             cout << "Scan complete:" << endl;
+             for (int id : results) {
+                 cout << "\tSeq. match at ID: " << id << endl;
+             }
+         }
+
+         cout << endl << "Please enter a sequence to search for or exit to end: ";
+         cin >> seq;
+    }
 
     return 0;
 }

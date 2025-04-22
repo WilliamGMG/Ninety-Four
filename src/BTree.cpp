@@ -115,20 +115,6 @@ void BTree::insert_nonfull(TreeNodes *node, string seq, int id) {
     }
 }
 
-
-
-
-// set<int> BTree::BTree_search(string seq) {
-//     set<int> result=root->search(seq);
-//     if (result.empty()) {
-//         cout << "Sequence not found" << endl;
-//     }
-//     return result;
-// }
-//
-// void BTree::BTree_print() {
-//     root->print();
-// }
 void BTree::load_file(FileLoader& file) {
     vector<pair<int, string>> chunk;
 
@@ -151,3 +137,56 @@ void BTree::load_file(FileLoader& file) {
     }
 }
 
+//Citation: Level Order Traversal from Sum of Right Leaves (in Module 3 Slides)
+//Private Search Call
+set<int> BTree::BTree_BFSsearch(string seq){
+    set<int> result;
+    //Edge Case
+    if (root == nullptr || seq.empty()){
+        return {};
+    }
+
+    queue<TreeNodes*> q;
+    q.push(root); //Add first Node
+
+    while (!q.empty()){
+        TreeNodes* currNode = q.front();
+
+        //Check the keys in the current TreeNode
+        for (auto & key : currNode->get_keys()){
+            //Search Function: key direct match || subsequence check
+            if (key.first == seq || currNode->kmp(seq,key.first)){
+                result.insert(key.second);
+            }
+        }
+
+        //Push in the Children ~Equivalent to Left and Right Child Push in BST
+        if (!currNode->get_is_leaf()){
+            for (auto child : currNode->get_child_ptrs()){
+                q.push(child);
+            }
+        }
+
+        q.pop();
+    }
+
+    return result;
+}
+
+//Public Search Call
+set<int> BTree::search(string seq) {
+    return BTree_BFSsearch(seq);
+}
+
+//OLD CODE IN CASE:
+// set<int> BTree::BTree_search(string seq) {
+//     set<int> result=root->search(seq);
+//     if (result.empty()) {
+//         cout << "Sequence not found" << endl;
+//     }
+//     return result;
+// }
+//
+// void BTree::BTree_print() {
+//     root->print();
+// }

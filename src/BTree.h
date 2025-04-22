@@ -7,11 +7,13 @@
 #include "TreeNodes.h"
 #include "FileLoader.h"
 #include <set>
+#include <queue>
 
 
 class BTree {
     TreeNodes* root;
     const int t = 2; //this is the min amount of keys
+    set<int> BTree_BFSsearch(string seq);
 public:
     BTree();
     ~BTree();
@@ -21,7 +23,7 @@ public:
     void split(TreeNodes* parent, int i);
     void insert_nonfull(TreeNodes* node, string seq, int id);
 
-    // set<int> BTree_search(string seq);
+    set<int> search(string seq);
     // void BTree_print();
     void load_file(FileLoader& file);
 };
