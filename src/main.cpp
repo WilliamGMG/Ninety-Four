@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <set>
+#include <limits>
 
 #include "FileLoader.h"
 #include "HashMap.h"
@@ -64,7 +65,7 @@ int main() {
   //Create BTree's and HashMaps
   vector<BTree*> bTrees;
   vector<HashMap*> hashMaps;
-  int maxSequenceLength = -1;
+  int maxSequenceLength = INT_MAX;
   for (auto fileLoader : fileLoaders) {
     auto* newBTree = new BTree();
     newBTree->load_file(fileLoader);
@@ -76,7 +77,7 @@ int main() {
     hashMaps.push_back(newHashMap);
 
     int newSeqLen = fileLoader.getSequenceLength();
-    if (newSeqLen > maxSequenceLength) {
+    if (newSeqLen < maxSequenceLength) {
       maxSequenceLength = newSeqLen;
     }
   }
@@ -89,7 +90,7 @@ int main() {
 
   bool lineNum;
   string option;
-  cout << endl << "Option: Would you like to know the line number of the sequence?\nEnter yes for yes or anything else for no: ";
+  cout << endl << "Option: Would you like to know the line number of the sequence?\nEnter \"yes\" for yes or anything else for no: ";
   cin >> option;
   if (option == "yes") {
     lineNum = true;
@@ -103,7 +104,7 @@ int main() {
   // Get and search for sequences
   string seq;
   while (true) {
-    cout << "Please enter a sequence to search for: ";
+    cout << "Please enter a sequence to search for or \"exit\" to exit: ";
     cin >> seq;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
