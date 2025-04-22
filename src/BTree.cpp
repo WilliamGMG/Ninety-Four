@@ -1,9 +1,4 @@
-//
-// Created by manta on 4/19/2025.
-//
-
 #include "BTree.h"
-
 #include <iostream>
 
 BTree::BTree() {

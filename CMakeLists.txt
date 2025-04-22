@@ -11,4 +11,5 @@ add_executable(Ninety-Four
         src/BTree.cpp
         src/BTree.h
         src/TreeNodes.cpp
-        src/TreeNodes.h)
+        src/TreeNodes.h
+)

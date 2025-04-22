@@ -26,8 +26,6 @@ public:
 
     set<int> search(string seq);
     void load_file(FileLoader& file);
-
-    set<int> BTree_BFS_search(string seq);
 };
 
 

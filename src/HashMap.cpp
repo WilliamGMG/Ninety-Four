@@ -19,18 +19,12 @@ void HashMap::insert(int id, const string &sequence) {
     insertPrivate(id, sequence);
 }
 void HashMap::insertPrivate(int id, const string &sequence) {
-    //hashmapByID.insert({id, sequence});
     hashmapBySeq[sequence].insert(id);
 }
 
 //Search
-//Citation: https://cplusplus.com/reference/unordered_map/unordered_map/find/
 set<int> HashMap::search(int id, const string &sequence) {
-    //Citation: https://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now & Module 2 Study Guide
-    //auto t1= std::chrono::high_resolution_clock::now();
     set<int> resultVector = searchPrivate(id,sequence);
-    //auto t2 = std::chrono::high_resolution_clock::now();
-    //searchTime = t2 - t1;
     return resultVector;
 }
 set<int> HashMap::searchPrivate(int id, const string &sequence) {
@@ -52,12 +46,6 @@ void HashMap::print() {
     printPrivate();
 }
 void HashMap::printPrivate() {
-    /*
-    for (auto & specimen : hashmapByID){
-        cout << "ID: " << specimen.first << ": " << specimen.second << endl;
-        }
-    }
-     */
     for (auto & sequence : hashmapBySeq){
         cout << "Sequence: " << sequence.first << ": ";
         for (int i : sequence.second){
@@ -68,7 +56,8 @@ void HashMap::printPrivate() {
                 cout << i << endl;
             }
         }
-    }}
+    }
+}
 
 set<int> HashMap::getIDs(const string &exactSequence) {
     return hashmapBySeq[exactSequence];
@@ -150,17 +139,3 @@ void HashMap::updateDebugSeqMap() {
         debuggingSequences[seq.first] = seq.second;
     }
 }
-
-/*
-map<int, string> HashMap::debugIDMap() {
-updateDebugIDMap();
-return debuggingIDs;
-}
-
-void HashMap::updateDebugIDMap() {
-for (auto & specimen : hashmapByID){
-    debuggingIDs[specimen.first] = specimen.second;
-}
-
-}
-*/

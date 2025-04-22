@@ -40,20 +40,6 @@ public:
     vector<int> lps(string seq);
 };
 
-//OLD COLD IN CASE
-    // void insert_key(string seq, int id);
-    // void split_node(int key_index, TreeNodes* child);
-    // set<int> search(string seq);
-    // void print();
-    // int get_key_size();
-    // void set_ptr(TreeNodes* child);
-    // int get_min_degree();
-    // bool getleaf();
-    // pair<string,int> get_key(int i);
-    // TreeNodes* get_child(int i);
-    // int get_child_index(const string& seq) const;
-    // void insert_into_leaf(const string& seq, int id);
-
 
 
 #endif //TREENODES_H

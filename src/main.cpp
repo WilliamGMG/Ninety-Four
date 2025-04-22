@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <utility>
 #include <set>
 #include <limits>
 
@@ -14,6 +13,10 @@ using namespace std;
 // Search here for genomes to download here: https://www.ncbi.nlm.nih.gov/datasets/genome/
 
 int main() {
+    cout << "  _____________________________________________  " << endl;
+    cout << " |                                             | " << endl;
+    cout << " |       Welcome to Gene Seek-Quence!          | " << endl;
+    cout << " |_____________________________________________| " << endl << endl;
 
   // Get .fna files
   string path;
@@ -45,21 +48,21 @@ int main() {
 
     // Check if it was successful
     if (searchStatus == FileSearchStatus::InvalidFolderPath) {
-      cout << "Path does not exist!" << endl;
+      cout << "Path does not exist!" << endl << endl;
       continue;
     }
     if (searchStatus == FileSearchStatus::InvalidFNApath) {
-      cout << "Invalid file path!" << endl;
+      cout << "Invalid file path!" << endl << endl;
       continue;
     }
     if (searchStatus == FileSearchStatus::FileNotFoundInFolder) {
-      cout << ".fna file not found in folder!" << endl;
+      cout << ".fna file not found in folder!" << endl << endl;
       continue;
     }
 
     validFiles.insert(path);
     fileLoaders.push_back(newFileLoader);
-    cout << "File found!" << endl;
+    cout << "File found!" << endl << endl;
   }
 
   //Create BTree's and HashMaps
